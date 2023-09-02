@@ -8,14 +8,38 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var countDownTimer = 5
+    @State private var timerRunning = false
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    
     var body: some View {
+        
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+            Text("\(countDownTimer)")
+                .onReceive(timer){ _ in
+                    if(countDownTimer > 0 && timerRunning)
+                    {
+                        countDownTimer-=1
+                    }
+                    else{
+                        timerRunning=false
+                    }
+                }
+                .font(.system(size: 90,weight: .bold))
+            HStack{
+                Button("Start"){
+                    timerRunning=true
+                }
+                
+                Button("Reset")
+                {
+                    countDownTimer=5
+                }
+                .foregroundColor(.red)
+            }
+           
         }
-        .padding()
+        
     }
 }
 
